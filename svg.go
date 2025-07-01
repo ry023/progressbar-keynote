@@ -12,9 +12,20 @@ func generateSVG(currentIndex int, s slideData) string {
 	widthPerPage := 1000.0 / float64(s.totalPages())
 	currentPage := s.pageNum(currentIndex)
 
+	chapters := s.chapters
+	if len(chapters) == 0 {
+		// If no chapters, create a dummy chapter for the entire range
+		chapters = []chapter{
+			{
+				title:      "",
+				startIndex: s.enabledIndexes[0],
+				endIndex:   s.enabledIndexes[len(s.enabledIndexes)-1],
+			},
+		}
+	}
 	svg := `<svg width="1000" height="100" viewBox="0 0 1000 50" xmlns="http://www.w3.org/2000/svg">`
 
-	for _, chapter := range s.chapters {
+	for _, chapter := range chapters {
 		startPage := s.pageNum(chapter.startIndex)
 		endPage := s.pageNum(chapter.endIndex)
 
@@ -63,7 +74,7 @@ func generateSVG(currentIndex int, s slideData) string {
 	// Draw current page indicator
 	svg += fmt.Sprintf(
 		`<circle cx="%d" cy="23" r="8" fill="#EF426D" />`,
-		int(float64(currentPage) * widthPerPage),
+		int(float64(currentPage)*widthPerPage),
 	)
 	svg += `</svg>`
 

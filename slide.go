@@ -91,6 +91,12 @@ type SlideNote struct {
 }
 
 func getSlideNote(slideIndex int) (*SlideNote, error) {
+	// タイトルは問答無用でスキップ
+	if slideIndex == 0 {
+		return &SlideNote{
+			Skip: true,
+		}, nil
+	}
 	script := fmt.Sprintf(`
 			tell application "Keynote"
 			    presenter notes of slide %d of front document as string

@@ -55,14 +55,14 @@ func generateSVG(currentIndex int, s slideData) string {
 		// Draw chapter title
 		// <text x="10" y="10" font-family="筑紫B丸ゴシック" font-size="10" fill="#ccc">チャプター1</text>
 		svg += fmt.Sprintf(
-			`<text x="%d" y="10" font-family="筑紫B丸ゴシック" font-size="10" fill="#000">%s</text>`,
-			int(float64(startPage-1)*widthPerPage)+10,
+			`<text x="%d" y="12" font-family="筑紫B丸ゴシック" font-size="10" fill="#000">%s</text>`,
+			int(float64(startPage-1)*widthPerPage),
 			chapter.title,
 		)
 	}
 	// Draw current page indicator
 	svg += fmt.Sprintf(
-		`<circle cx="%d" cy="24" r="8" fill="#EF426D" />`,
+		`<circle cx="%d" cy="23" r="8" fill="#EF426D" />`,
 		int(float64(currentPage) * widthPerPage),
 	)
 	svg += `</svg>`

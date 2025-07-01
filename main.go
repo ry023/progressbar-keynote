@@ -5,15 +5,12 @@ import (
 )
 
 func main() {
-	s := slideData{
-		enabledIndexes: []int{0, 1, 2, 3, 30, 100},
-		chapters: []chapter{
-			{title: "Chapter 1", startIndex: 0, endIndex: 1},
-			{title: "Chapter 2", startIndex: 2, endIndex: 3},
-			{title: "Chapter 3", startIndex: 30, endIndex: 100},
-		},
+
+	s, err := parse()
+	if err != nil {
+		panic(err)
 	}
 
-	svg := generateSVG(1, s)
+	svg := generateSVG(s.enabledIndexes[5], s)
 	fmt.Println(svg)
 }

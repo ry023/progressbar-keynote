@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -121,4 +122,63 @@ func getSlideNote(slideIndex int) (*SlideNote, error) {
 		}
 	}
 	return &note, nil
+}
+
+func deleteProgressBars() error {
+	script := `
+tell application "Keynote"
+  set slideCount to count of slides of front document
+  repeat with i from 1 to slideCount
+    set theSlide to slide i of front document
+	  set imageCount to count of images of theSlide
+	  repeat with j from imageCount to 1 by -1
+      set theImage to image j of theSlide
+      set imageName to file name of theImage
+      if imageName contains "progress_" then
+        delete theImage
+      end if
+	  end repeat
+  end repeat
+end tell
+	`
+	cmd := exec.Command("osascript", "-e", script)
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
+
+func insertProgressBar(currentIndex int, s slideData) error {
+	// create svg file
+	os.MkdirAll("tmp", os.ModePerm)
+	fname := fmt.Sprintf("progress_%02d.svg", currentIndex)
+	svg := generateSVG(currentIndex, s)
+	file, err := os.Create(fmt.Sprintf("tmp/%s", fname))
+	if err != nil {
+		return fmt.Errorf("failed to create SVG file: %w", err)
+	}
+	defer file.Close()
+	_, err = file.WriteString(svg)
+	if err != nil {
+		return fmt.Errorf("failed to write SVG file: %w", err)
+	}
+
+	script := fmt.Sprintf(`
+tell application "Keynote"
+    set theDoc to front document
+    set slideWidth to width of theDoc
+    set slideHeight to height of theDoc
+    set barY to slideHeight - 120
+    set theSlide to slide %d of theDoc
+    set svgPath to POSIX file "%s" as alias
+    tell theSlide
+        set newImage to make new image with properties {file:svgPath, position:{10, barY}}
+        set width of newImage to slideWidth - 20
+    end tell
+end tell
+`, currentIndex, fmt.Sprintf("%s/tmp/%s", os.Getenv("PWD"), fname))
+	cmd := exec.Command("osascript", "-e", script)
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to insert progress bar: %w", err)
+	}
+	return nil
 }

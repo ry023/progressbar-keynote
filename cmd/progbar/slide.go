@@ -76,6 +76,7 @@ func parse() (slideData, error) {
 func getSlideCount() (int, error) {
 	script := `
       tell application "Keynote"
+          activate
           count of slides of front document
       end tell
     `
@@ -100,6 +101,7 @@ func getSlideNote(slideIndex int) (*SlideNote, error) {
 	}
 	script := fmt.Sprintf(`
 			tell application "Keynote"
+			    activate
 			    presenter notes of slide %d of front document as string
 			end tell
 		`, slideIndex)
@@ -127,6 +129,7 @@ func getSlideNote(slideIndex int) (*SlideNote, error) {
 func deleteProgressBars() error {
 	script := `
 tell application "Keynote"
+  activate
   set slideCount to count of slides of front document
   repeat with i from 1 to slideCount
     set theSlide to slide i of front document
@@ -163,6 +166,7 @@ func insertProgressBar(currentIndex int, s slideData) error {
 
 	script := fmt.Sprintf(`
 tell application "Keynote"
+    activate
     set theDoc to front document
     set slideWidth to width of theDoc
     set slideHeight to height of theDoc

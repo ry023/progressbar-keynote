@@ -7,6 +7,7 @@ import (
 const margin = 2
 const inactiveBarHeight = 6
 const activeBarHeight = 8
+const fontFamily = "筑紫B丸ゴシック"
 
 func generateSVG(currentIndex int, s slideData) string {
 	widthPerPage := 1000.0 / float64(s.totalPages())
@@ -65,8 +66,9 @@ func generateSVG(currentIndex int, s slideData) string {
 
 		// Draw chapter title
 		svg += fmt.Sprintf(
-			`<text x="%d" y="12" font-family="筑紫B丸ゴシック" font-size="10" fill="#ccc">%s</text>`,
+			`<text x="%d" y="12" font-family="%s" font-size="10" fill="#ccc">%s</text>`,
 			int(float64(startPage-1)*widthPerPage),
+			fontFamily,
 			chapter.title,
 		)
 	}

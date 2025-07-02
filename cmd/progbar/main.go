@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-
 	log.Print("Starting slide processing...")
 	s, err := parse()
 	if err != nil {

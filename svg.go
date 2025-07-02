@@ -64,9 +64,8 @@ func generateSVG(currentIndex int, s slideData) string {
 		}
 
 		// Draw chapter title
-		// <text x="10" y="10" font-family="筑紫B丸ゴシック" font-size="10" fill="#ccc">チャプター1</text>
 		svg += fmt.Sprintf(
-			`<text x="%d" y="12" font-family="筑紫B丸ゴシック" font-size="10" fill="#000">%s</text>`,
+			`<text x="%d" y="12" font-family="筑紫B丸ゴシック" font-size="10" fill="#ccc">%s</text>`,
 			int(float64(startPage-1)*widthPerPage),
 			chapter.title,
 		)

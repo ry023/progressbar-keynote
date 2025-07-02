@@ -30,6 +30,7 @@ Chapter: Introduction
 #### Skip progress bar
 
 Add `Skip: true` to the presenter notes of that slide if you want to skip the progress bar for a specific slide;
+**(Storonglly recommended to use this for the first title slide)**
 
 ```
 Skip: true

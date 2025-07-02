@@ -2,6 +2,8 @@
 
 Embed a progress bar in your keynote presentation.
 
+![Progress Bar Example](./example.png)
+
 ## Install
 
 ```bash
